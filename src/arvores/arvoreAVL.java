@@ -178,4 +178,12 @@ public class arvoreAVL {
         }
         return null;
     }
+
+    public int size() {
+        return contadorNos;
+    }
+
+    public int getRotationCount() {
+        return contadorRotacoes;
+    }
 }
