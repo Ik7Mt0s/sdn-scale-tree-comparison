@@ -23,4 +23,18 @@ public class arvoreAVL {
         contadorRotacoes = 0;
         contadorNos = 0;
     }
+
+    private int altura(No no){
+        return no == null ? 0 : no.altura;
+    }
+
+    private int fatorBalanceamento(No no) {
+        return no == null ? 0 : altura(no.esquerda) - altura(no.direita);
+    }
+
+    private void atualizarAltura(No no) {
+        if (no != null) {
+            no.altura = 1 + Math.max(altura(no.esquerda), altura(no.direita));
+        }
+    }
 }
