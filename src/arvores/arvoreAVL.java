@@ -104,4 +104,28 @@ public class arvoreAVL {
         return no;
     }
 
+    public void inserir(PacketRule regra){
+        raiz = inserirRecursivo(raiz, regra);
+    }
+
+    private No inserirRecursivo(No no, PacketRule regra){
+        if (no == null) {
+            contadorNos++;
+            return new No(regra);
+        }
+
+        int cmp = regra.compareTo(no.regra);
+
+        if(cmp < 0){
+            no.esquerda = inserirRecursivo(no.esquerda, regra);
+        } else if(cmp > 0){
+            no.direita = inserirRecursivo(no.direita, regra);
+        } else{
+            return no;
+        }
+
+        atualizarAltura(no);
+
+        return balancear(no);
+    }
 }
