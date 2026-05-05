@@ -77,4 +77,31 @@ public class arvoreAVL {
         no.direita = rotacaoSimplesDireita(no.direita);
         return rotacaoSimplesEsquerda(no);
     }
+
+    private No balancear(No no){
+        if (no == null) return null;
+
+        int FB = fatorBalanceamento(no);
+
+        if (FB > 1) {
+            if (fatorBalanceamento(no.esquerda) >= 0) {
+                return rotacaoSimplesDireita(no);
+            }
+            else {
+                return rotacaoDuplaEsqDir(no);
+            }
+        }
+
+        if (FB < -1) {
+            if (fatorBalanceamento(no.direita) <= 0) {
+                return rotacaoSimplesEsquerda(no);
+            }
+            else{
+                return rotacaoDuplaDirEsq(no);
+            }
+        }
+
+        return no;
+    }
+
 }
