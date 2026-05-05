@@ -67,4 +67,14 @@ public class arvoreAVL {
 
         return y;
     }
+
+    private No rotacaoDuplaEsqDir(No no){
+        no.esquerda = rotacaoSimplesEsquerda(no.esquerda);
+        return rotacaoSimplesDireita(no);
+    }
+
+    private No rotacaoDuplaDirEsq(No no){
+        no.direita = rotacaoSimplesDireita(no.direita);
+        return rotacaoSimplesEsquerda(no);
+    }
 }
