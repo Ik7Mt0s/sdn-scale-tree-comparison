@@ -128,4 +128,39 @@ public class arvoreAVL {
 
         return balancear(no);
     }
+
+    public void remover(PacketRule regra){
+        raiz = removerRecursivo(raiz, regra);
+    }
+
+    private No removerRecursivo(No no, PacketRule regra){
+        if (no == null) return null;
+
+        int cmp = regra.compareTo(no.regra);
+
+        if (cmp < 0) {
+            no.esquerda = removerRecursivo(no.esquerda, regra);
+        } else if (cmp > 0) {
+            no.direita = removerRecursivo(no.direita, regra);
+        } else {
+            if (no.esquerda == null || no.direita == null){
+                contadorNos--;
+                return (no.esquerda != null) ? no.esquerda : no.direita;
+            } else {
+                No sucessor = encontrarMinimo(no.direita);
+                no.regra = sucessor.regra;
+                no.direita = removerRecursivo(no.direita, sucessor.regra);
+            }
+        }
+
+        atualizarAltura(no);
+        return balancear(no);
+    }
+
+    private No encontrarMinimo(No no) {
+        while (no.esquerda != null) {
+            no = no.esquerda;
+        }
+        return no;
+    }
 }
