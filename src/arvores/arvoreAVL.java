@@ -37,4 +37,34 @@ public class arvoreAVL {
             no.altura = 1 + Math.max(altura(no.esquerda), altura(no.direita));
         }
     }
+
+    private No rotacaoSimplesDireita(No y) {
+        No x = y.esquerda;
+        No filhoDireitoDeX = x.direita;
+
+        x.direita = y;
+        y.esquerda = filhoDireitoDeX;
+
+        atualizarAltura(y);
+        atualizarAltura(x);
+
+        contadorRotacoes++;
+
+        return x;
+    }
+
+    private No rotacaoSimplesEsquerda(No x) {
+        No y = x.direita;
+        No filhoEsquerdoDeY = y.esquerda;
+
+        y.esquerda = x;
+        x.direita = filhoEsquerdoDeY;
+
+        atualizarAltura(x);
+        atualizarAltura(y);
+
+        contadorRotacoes++;
+
+        return y;
+    }
 }
