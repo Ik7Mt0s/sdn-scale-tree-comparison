@@ -79,4 +79,7 @@ public class arvoreRBT {
 
         contadorRotacoes++;
     }
+
+    private boolean ehVermelho(No no) { return no.cor == VERMELHO; }
+    private boolean ehPreto(No no)   { return no.cor == PRETO; }
 }
