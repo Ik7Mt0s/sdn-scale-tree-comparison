@@ -19,7 +19,7 @@ public class arvoreRBT {
             this.pai = NIL;
         }
 
-        private No(boolean isNil) {
+        private No(boolean ehNil) {
             this.regra = null;
             this.cor = PRETO;
             this.esquerda = this.direita = this.pai = this;
@@ -34,5 +34,49 @@ public class arvoreRBT {
         raiz = NIL;
         contadorRotacoes = 0;
         contadorNos = 0;
+    }
+
+    private void rotacionarEsquerda(No x){
+        No y = x.direita;
+        x.direita = y.esquerda;
+
+        if (y.esquerda !=NIL) y.esquerda.pai = x;
+
+        y.pai = x.pai;
+
+        if (x.pai == NIL) {
+            raiz = y;
+        } else if (x == x.pai.esquerda) {
+            x.pai.esquerda = y;
+        } else {
+            x.pai.direita = y;
+        }
+
+        y.esquerda = x;
+        x.pai = y;
+
+        contadorRotacoes++;
+    }
+
+    private void rotacionarDireita(No y) {
+        No x = y.esquerda;
+        y.esquerda = x.direita;
+
+        if (x.direita != NIL) x.direita.pai = y;
+
+        x.pai = y.pai;
+
+        if (y.pai == NIL) {
+            raiz = x;
+        } else if (y == y.pai.esquerda) {
+            y.pai.esquerda = x;
+        } else {
+            y.pai.direita = x;
+        }
+
+        x.direita = y;
+        y.pai = x;
+
+        contadorRotacoes++;
     }
 }
