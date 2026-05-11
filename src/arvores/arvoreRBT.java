@@ -291,4 +291,19 @@ public class arvoreRBT {
         }
         x.cor = PRETO;
     }
+
+    public PacketRule buscar(int prioridade) {
+        No atual = raiz;
+        while (atual != NIL) {
+            int prioAtual = atual.regra.getPriority();
+            if (prioridade == prioAtual) {
+                return atual.regra;
+            } else if (prioridade > prioAtual) {
+                atual = atual.esquerda;
+            } else {
+                atual = atual.direita;
+            }
+        }
+        return null;
+    }
 }
