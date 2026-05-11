@@ -90,21 +90,24 @@ public class arvoreRBT {
 
         while (x != NIL) {
             y = x;
-            if (z.regra.compareTo(x.regra) < 0)
+            if (z.regra.compareTo(x.regra) < 0){
                 x = x.esquerda;
-            else
+            }
+            else{
                 x = x.direita;
+            }
         }
 
         z.pai = y;
 
-        if (y == NIL)
+        if (y == NIL){ 
             raiz = z;
-        else if (z.regra.compareTo(y.regra) < 0)
+        }else if (z.regra.compareTo(y.regra) < 0){
             y.esquerda = z;
-        else
+        }
+        else{
             y.direita = z;
-
+        }
         z.esquerda = NIL;
         z.direita = NIL;
         z.cor = VERMELHO;
@@ -158,5 +161,134 @@ public class arvoreRBT {
                 }
             }
         }
+    }
+
+    public void remover(PacketRule regra) {
+        No z = buscarNo(regra);
+        if (z == null) return;
+
+        No y = z;
+        boolean yCorOriginal = y.cor;
+        No x;
+
+        if (z.esquerda == NIL) {
+            x = z.direita;
+            transplante(z, z.direita);
+        } else if (z.direita == NIL) {
+            x = z.esquerda;
+            transplante(z, z.esquerda);
+        } else {
+            y = minimo(z.direita);
+            yCorOriginal = y.cor;
+            x = y.direita;
+            if (y.pai == z) {
+                if (x != NIL) {
+                    x.pai = y;
+                }
+            } else {
+                transplante(y, y.direita);
+                y.direita = z.direita;
+                y.direita.pai = y;
+            }
+            transplante(z, y);
+            y.esquerda = z.esquerda;
+            y.esquerda.pai = y;
+            y.cor = z.cor;
+        }
+
+        contadorNos--;
+
+        if (yCorOriginal == PRETO) {
+            corrigirRemocao(x);
+        }
+    }
+
+    private No buscarNo(PacketRule regra) {
+        No atual = raiz;
+        while (atual != NIL) {
+            int cmp = regra.compareTo(atual.regra);
+            if (cmp == 0)
+                return atual;
+            else if (cmp < 0)
+                atual = atual.esquerda;
+            else
+                atual = atual.direita;
+        }
+        return null;
+    }
+
+    private No minimo(No no) {
+        while (no.esquerda != NIL) {
+            no = no.esquerda;
+        }
+        return no;
+    }
+
+    private void transplante(No u, No v){
+        if (u.pai == NIL) {
+            raiz = v;            
+        } else if (u == u.pai.esquerda) {
+            u.pai.esquerda = v;
+        } else {
+            u.pai.direita = v;
+        }
+        if (v != NIL) {
+            v.pai = u.pai; 
+        }
+    }
+
+    private void corrigirRemocao(No x){
+        while (x != raiz && ehPreto(x)) {
+            if (x == x.pai.esquerda) {
+                No w = x.pai.direita;
+                if (ehVermelho(w)) {
+                    w.cor = PRETO;
+                    x.pai.cor = VERMELHO;
+                    rotacionarEsquerda(x.pai);
+                    w = x.pai.direita;
+                }
+                if (ehPreto(w.esquerda) && ehPreto(w.direita)) {
+                    w.cor = VERMELHO;
+                    x = x.pai;
+                } else {
+                    if (ehPreto(w.direita)) {
+                        w.esquerda.cor = PRETO;
+                        w.cor = VERMELHO;
+                        rotacionarDireita(w);
+                        w = x.pai.direita;
+                    }
+                    w.cor = x.pai.cor;
+                    x.pai.cor = PRETO;
+                    w.direita.cor = PRETO;
+                    rotacionarEsquerda(x.pai);
+                    x = raiz;
+                }
+            } else {
+                No w = x.pai.esquerda;
+                if (ehVermelho(w)) {
+                    w.cor = PRETO;
+                    x.pai.cor = VERMELHO;
+                    rotacionarDireita(x.pai);
+                    w = x.pai.esquerda;
+                }
+                if (ehPreto(w.direita) && ehPreto(w.esquerda)) {
+                        w.cor = VERMELHO;
+                        x = x.pai;
+                    } else {
+                        if (ehPreto(w.esquerda)) {
+                        w.direita.cor = PRETO;
+                        w.cor = VERMELHO;
+                        rotacionarEsquerda(w);
+                        w = x.pai.esquerda;
+                    }
+                    w.cor = x.pai.cor;
+                    x.pai.cor = PRETO;
+                    w.esquerda.cor = PRETO;
+                    rotacionarDireita(x.pai);
+                    x = raiz;
+                }
+            }
+        }
+        x.cor = PRETO;
     }
 }
